@@ -1,5 +1,6 @@
 // Server Component
 
+import { Suspense } from "react";
 import Convertor from "./convertor";
 
 export default async function Page() {
@@ -7,7 +8,9 @@ export default async function Page() {
 
   return (
     <main>
-      <Convertor />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Convertor />
+      </Suspense>
     </main>
   );
 }
