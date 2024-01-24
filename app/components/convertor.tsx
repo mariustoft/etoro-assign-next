@@ -1,19 +1,19 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
-import {
-  getSimplePrice,
-  getSupportedCurrencies,
-} from "./actions/getSimplePrice";
 import {
   DEFAULT_SELECTED_COIN,
   DEFAULT_SELECTED_CURRENCY,
   PORTFOLIO,
-} from "./constants";
+} from "../constants";
+
+import { useFormState, useFormStatus } from "react-dom";
+import { getSimplePrice } from "../actions/getSimplePrice";
 import { useRouter } from "next/navigation";
+import { getSupportedCurrencies } from "../actions/getSupportedCurrencies";
+import { getUpdatedUrl } from "../tools/getUpdatedUrl";
 
 export default function Convertor(props: {
-  supportedCurrencies: Awaited<ReturnType<typeof getSupportedCurrencies>>;
+  supportedCurrencies?: Awaited<ReturnType<typeof getSupportedCurrencies>>;
   searchParams: { [key: string]: string };
 }) {
   const router = useRouter();
@@ -34,24 +34,6 @@ export default function Convertor(props: {
     return calculatedConversion;
   };
 
-  const getUpdatedUrl = (args: {
-    amount?: string;
-    coin?: string;
-    currencies?: string[];
-    open?: "1" | "0";
-  }) => {
-    const url = new URL(window.location.href);
-    args.amount && url.searchParams.set("amount", args.amount);
-    args.coin && url.searchParams.set("coin", args.coin);
-
-    args.currencies &&
-      url.searchParams.set("currencies", args.currencies.join(","));
-    console.log(args.open);
-
-    args.open && url.searchParams.set("open", args.open);
-    return url.toString();
-  };
-
   return (
     <form
       action={formAction}
@@ -67,6 +49,7 @@ export default function Convertor(props: {
       }}
       className="w-5/6 gap-2"
     >
+      {pending && <p>loading...</p>}
       <section className="flex flex-row gap-2">
         {/* input amount */}
         <input
@@ -90,6 +73,7 @@ export default function Convertor(props: {
           id="coin"
           onChange={(e) => {
             router.push(getUpdatedUrl({ coin: e.currentTarget.value }));
+            e.preventDefault();
           }}
           defaultValue={selectedCoin}
         >
@@ -112,43 +96,47 @@ export default function Convertor(props: {
 
       <hr />
       {/* checboxes for currencies*/}
-      <details
-        className="flex flex-col gap-2"
-        open={isOpen}
-        onClick={(e) => {
-          router.push(getUpdatedUrl({ open: !e.currentTarget.open ? "1" : "0"}));
-        }}
-      >
-        <summary className="flex flex-row flex-wrap gap-2 cursor-pointer w-122 h-100 bg-green-500/100 rounded-md">
-          {props.supportedCurrencies
-            .filter((currency) => selectedCurrencies.includes(currency))
-            .map((currency) => (
-              <label key={currency} className="mr-10">
-                {currency} {getCalculatedConversion(currency)}
+      {props.supportedCurrencies ? (
+        <details
+          className="flex flex-col gap-2"
+          open={isOpen}
+          onClick={(e) => {
+            router.push(
+              getUpdatedUrl({ open: !e.currentTarget.open ? "1" : "0" })
+            );
+          }}
+        >
+          <summary className="flex flex-row flex-wrap gap-2 cursor-pointer w-122 h-100 bg-green-500/100 rounded-md">
+            {props.supportedCurrencies
+              .filter((currency) => selectedCurrencies.includes(currency))
+              .map((currency) => (
+                <label key={currency} className="mr-10">
+                  {currency} {getCalculatedConversion(currency)}
+                </label>
+              ))}
+          </summary>
+
+          <div className="lex flex-row flex-wrap gap-2">
+            {props.supportedCurrencies.map((currency) => (
+              <label key={currency}>
+                <input
+                  type="checkbox"
+                  name="currencies"
+                  defaultChecked={selectedCurrencies.includes(currency)}
+                  value={currency}
+                  className="w-8"
+                  onChange={(e) => {
+                    router.push(
+                      getUpdatedUrl({ currencies: [e.currentTarget.value] })
+                    );
+                  }}
+                />
+                {currency}
               </label>
             ))}
-        </summary>
-
-        <div className="lex flex-row flex-wrap gap-2">
-          {props.supportedCurrencies.map((currency) => (
-            <label key={currency}>
-              <input
-                type="checkbox"
-                name="currencies"
-                defaultChecked={selectedCurrencies.includes(currency)}
-                value={currency}
-                className="w-8"
-                onChange={(e) => {
-                  router.push(
-                    getUpdatedUrl({ currencies: [e.currentTarget.value] })
-                  );
-                }}
-              />
-              {currency}
-            </label>
-          ))}
-        </div>
-      </details>
+          </div>
+        </details>
+      ) : null}
     </form>
   );
 }

@@ -1,8 +1,9 @@
 // Server Component
 
 import { Suspense } from "react";
-import Convertor from "./convertor";
-import { getSupportedCurrencies } from "./actions/getSimplePrice";
+import Convertor from "./components/convertor";
+import { getSupportedCurrencies } from "./actions/getSupportedCurrencies";
+import Portfolio from "./components/portfolio";
 
 // revalidate chash every 5 seconds
 export const revalidate = 60 * 60;
@@ -12,14 +13,12 @@ export default async function Page(props: {
 }) {
   const supportedCurrencies = await getSupportedCurrencies();
 
-  console.log("supportedCusearchParams", props.searchParams);
-  console.log("supportedCurrencies", supportedCurrencies);
-
   return (
     <main className="w-full h-full flex flex-col items-center justify-center">
       <Suspense fallback={null}>
+        <Portfolio searchParams={props.searchParams} />
         <Convertor
-          supportedCurrencies={supportedCurrencies}
+          supportedCurrencies={supportedCurrencies || ["USD"]}
           searchParams={props.searchParams}
         />
       </Suspense>
