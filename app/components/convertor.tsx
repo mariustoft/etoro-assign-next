@@ -39,7 +39,7 @@ export default function Convertor(props: {
       action={formAction}
       onChange={(e) => {
         const formData = new FormData(e.currentTarget);
-
+console.log("formData",formData);
         router.push(
           getUpdatedUrl({
             currencies: formData.getAll("currencies") as string[],
@@ -103,6 +103,7 @@ export default function Convertor(props: {
           router.push(
             getUpdatedUrl({ open: e.currentTarget.open ? "0" : "1" })
           );
+          e.preventDefault();
         }}
       >
         <summary className="flex flex-row flex-wrap gap-2 cursor-pointer w-122 h-100 bg-green-500/100 rounded-md">
@@ -134,6 +135,7 @@ export default function Convertor(props: {
                   router.push(
                     getUpdatedUrl({ currencies: [e.currentTarget.value] })
                   );
+                  e.preventDefault();
                 }}
               />
               {currency}
