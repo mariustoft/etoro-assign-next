@@ -5,9 +5,11 @@ import Convertor from "./convertor";
 import { getSupportedCurrencies } from "./actions/getSimplePrice";
 
 // revalidate chash every 5 seconds
-export const revalidate = 3600 
+export const revalidate = 60 * 60;
 
-export default async function Page(props: { searchParams: {[key: string]: string} }) {
+export default async function Page(props: {
+  searchParams: { [key: string]: string };
+}) {
   const supportedCurrencies = await getSupportedCurrencies();
 
   console.log("supportedCusearchParams", props.searchParams);
