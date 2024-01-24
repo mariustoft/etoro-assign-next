@@ -11,15 +11,20 @@ export async function getSimplePrice(init: unknown, formData: FormData) {
   url.searchParams.set("vs_currencies", currencies.join(","));
   url.searchParams.set("include_last_updated_at", "true");
 
-  const response = await fetch(url.toString(), {
-    next: { revalidate: 60 * 60 },
-  });
-  const data = await response.json();
+  try {
+    const response = await fetch(url.toString(), {
+      next: { revalidate: 0 },
+    });
 
-  console.log("getSimplePrice", data);
+    if (response.status !== 200) throw new Error();
 
-  if (data["status"]) return null;
-  revalidatePath(url.toString());
+    const data = await response.json();
 
-  return data as Record<string, Record<string, number>>;
+    console.log("getSimplePrice", data);
+    revalidatePath("/");
+
+    return data as Record<string, Record<string, number>>;
+  } catch {
+    return null;
+  }
 }

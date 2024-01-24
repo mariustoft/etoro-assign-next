@@ -4,31 +4,30 @@ import { useRouter } from "next/navigation";
 import { PORTFOLIO } from "../constants";
 import { getUpdatedUrl } from "../tools/getUpdatedUrl";
 
-export default function Convertor(props: {
+export default function Portfolio(props: {
   searchParams: { [key: string]: string };
 }) {
-  const router = useRouter();
-
   return (
-    <div>
+    <section className="flex flex-col items-center justify-center w-full bg-black text-white">
+      <h1 className="text-4xl mb-8 text-green-500">Portfolio</h1>
       {Object.entries(PORTFOLIO).map(([key, value]) => {
         return (
           <button
             key={key}
-            className="flex flex-row items-center justify-between"
+            className="flex flex-row items-center justify-between w-full max-w-md px-4 py-2 mb-4 bg-green-500 rounded"
             onClick={(e) => {
-              router.push(
+              window.history.replaceState(
+                null,
+                "",
                 getUpdatedUrl({ coin: key, amount: value.toString() })
               );
-              e.preventDefault();
-              e.stopPropagation();
             }}
           >
-            <p>{key}</p>
-            <p>{value}</p>
+            <p className="text-lg font-bold">{key}</p>
+            <p className="text-lg">{value}</p>
           </button>
         );
       })}
-    </div>
+    </section>
   );
 }

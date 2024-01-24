@@ -4,16 +4,20 @@ import { revalidatePath } from "next/cache";
 
 export async function getSupportedCurrencies() {
   const url = new URL(process.env.API_URL + "/simple/supported_vs_currencies");
-  const response = await fetch(url.toString(), {
-    next: { revalidate: 60 * 60 },
-  });
-  const data = await response.json();
 
-  console.log("getSupportedCurrencies", data);
+  try {
+    const response = await fetch(url.toString(), {
+      next: { revalidate: 60 * 60 },
+    });
 
-  if (data["status"]) return null;
+    if (response.status !== 200) throw new Error();
 
-  // revalidatePath(url.toString());
-  return data as string[];
+    const data = await response.json();
+    console.log("getSupportedCurrencies", data);
+    revalidatePath("/");
+
+    return data as string[];
+  } catch {
+    return null;
+  }
 }
-
