@@ -46,7 +46,7 @@ export default function Convertor(props: {
             coin: formData.get("coin") as string,
           })
         )
-        router.refresh();
+        // router.refresh();
 
         e.stopPropagation();
       }}

@@ -14,6 +14,6 @@ export async function getSimplePrice(init: unknown, formData: FormData) {
   const response = await fetch(url.toString());
   const data: Record<string, Record<string, number>> = await response.json();
 
-  revalidatePath(url.toString());
+  // revalidatePath(url.toString());
   return data;
 }

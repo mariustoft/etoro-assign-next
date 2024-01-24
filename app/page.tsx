@@ -16,7 +16,7 @@ export default async function Page(props: {
       <Suspense fallback={null}>
         <Portfolio searchParams={props.searchParams} />
         <Convertor
-          supportedCurrencies={supportedCurrencies || ["USD"]}
+          supportedCurrencies={supportedCurrencies}
           searchParams={props.searchParams}
         />
       </Suspense>
