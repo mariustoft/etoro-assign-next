@@ -37,7 +37,7 @@ export default function Convertor(props: {
     amount?: string;
     coin?: string;
     currencies?: string[];
-    open?: boolean;
+    open?: 1 | 0;
   }) => {
     const url = new URL(window.location.href);
     args.amount && url.searchParams.set("amount", args.amount);
@@ -46,7 +46,7 @@ export default function Convertor(props: {
     args.currencies &&
       url.searchParams.set("currencies", args.currencies.join(","));
 
-    args.open ?? url.searchParams.set("open", args.open ? "1" : "0");
+    args.open && url.searchParams.set("open", args.open ? "1" : "0");
     return url.toString();
   };
 
@@ -59,7 +59,6 @@ export default function Convertor(props: {
         router.push(
           getUpdatedUrl({
             currencies: formData.getAll("currencies") as string[],
-            open: formData.get("open") === "1",
           })
         );
         e.stopPropagation();
@@ -113,16 +112,12 @@ export default function Convertor(props: {
       <details
         className="flex flex-col gap-2"
         open={isOpen}
-        onChange={(e) => {
-          router.push(getUpdatedUrl({ open: e.currentTarget.open }));
+        onClick={(e) => {
+          console.log(!e.currentTarget.open);
+          router.push(getUpdatedUrl({ open: !e.currentTarget.open ? 1 : 0}));
         }}
       >
-        <summary
-          className="flex flex-row flex-wrap gap-2 cursor-pointer w-122 h-100 bg-green-500/100 rounded-md"
-          onClick={() => {
-            router.push(getUpdatedUrl({ open: !isOpen }));
-          }}
-        >
+        <summary className="flex flex-row flex-wrap gap-2 cursor-pointer w-122 h-100 bg-green-500/100 rounded-md">
           {props.supportedCurrencies
             .filter((currency) => selectedCurrencies.includes(currency))
             .map((currency) => (
