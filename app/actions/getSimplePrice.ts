@@ -22,7 +22,6 @@ export async function getSimplePrice(init: unknown, formData: FormData) {
 }
 
 // /simple/supported_vs_currencies
-
 export async function getSupportedCurrencies() {
   const url = new URL(apiUrl + "/simple/supported_vs_currencies");
   const response = await fetch(url.toString());
