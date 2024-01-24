@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { currencies, portfolio } from "../constants";
 
 export type ReturnedDataType = Record<
@@ -17,9 +18,10 @@ export async function getSimplePrice(prevState: any, formData: FormData) {
   url.searchParams.set("vs_currencies", currencies.join(","));
   url.searchParams.set("include_last_updated_at", "true");
 
+  
   const response = await fetch(url.toString());
   const data: ReturnedDataType = await response.json();
-
-
+  
+  revalidatePath(url.toString());
   return data;
 }

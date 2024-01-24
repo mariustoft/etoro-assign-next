@@ -1,7 +1,7 @@
-export const currencies = ["btc", "eth", "usd"];
+export const currencies = ["btc", "eth", "usd"] as const;
 
 export const portfolio = {
-  cardano: 100,
-  bitcoin: 0,
-  ethereum: 0,
+  cardano: 12,
+  bitcoin: 22,
+  ethereum: 32,
 };
