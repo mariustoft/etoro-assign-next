@@ -2,14 +2,17 @@
 
 import { Suspense } from "react";
 import Convertor from "./convertor";
+import { getSupportedCurrencies } from "./actions/getSimplePrice";
 
 export default async function Page() {
-  // const data = await convertCoinToCurrency(1, "cardano", "usd");
+  const supportedCurrencies = await getSupportedCurrencies();
 
   return (
     <main>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Convertor />
+      <Suspense fallback={null}>
+        <Convertor 
+          supportedCurrencies={supportedCurrencies}
+        />
       </Suspense>
     </main>
   );
