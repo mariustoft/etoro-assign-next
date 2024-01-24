@@ -43,8 +43,11 @@ export default function Convertor(props: {
         router.push(
           getUpdatedUrl({
             currencies: formData.getAll("currencies") as string[],
+            coin: formData.get("coin") as string,
           })
-        );
+        )
+        router.refresh();
+
         e.stopPropagation();
       }}
       className="w-5/6 gap-2"
@@ -71,11 +74,11 @@ export default function Convertor(props: {
           className="p-1 w-1/2 border-2 border-black rounded-md"
           name="coin"
           id="coin"
-          onChange={(e) => {
-            router.push(getUpdatedUrl({ coin: e.currentTarget.value }));
-            e.preventDefault();
-          }}
-          defaultValue={selectedCoin}
+          // onChange={(e) => {
+          //   router.push(getUpdatedUrl({ coin: e.currentTarget.value }));
+          //   e.preventDefault();
+          // }}
+          value={selectedCoin}
         >
           {/* selector for coins */}
           {Object.keys(PORTFOLIO).map((coin) => (
@@ -102,7 +105,7 @@ export default function Convertor(props: {
           open={isOpen}
           onClick={(e) => {
             router.push(
-              getUpdatedUrl({ open: !e.currentTarget.open ? "1" : "0" })
+              getUpdatedUrl({ open: e.currentTarget.open ? "0" : "1" })
             );
           }}
         >
@@ -123,7 +126,7 @@ export default function Convertor(props: {
                   type="checkbox"
                   name="currencies"
                   defaultChecked={selectedCurrencies.includes(currency)}
-                  value={currency}
+                  defaultValue={currency}
                   className="w-8"
                   onChange={(e) => {
                     router.push(
