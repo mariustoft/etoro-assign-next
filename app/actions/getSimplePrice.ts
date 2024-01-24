@@ -11,13 +11,15 @@ export async function getSimplePrice(init: unknown, formData: FormData) {
   url.searchParams.set("vs_currencies", currencies.join(","));
   url.searchParams.set("include_last_updated_at", "true");
 
-  const response = await fetch(url.toString());
+  const response = await fetch(url.toString(), {
+    next: { revalidate: 60 * 60 },
+  });
   const data = await response.json();
 
   console.log("getSimplePrice", data);
 
-
   if (data["status"]) return null;
+  revalidatePath(url.toString());
 
   return data as Record<string, Record<string, number>>;
 }

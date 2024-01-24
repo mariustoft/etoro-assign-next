@@ -21,6 +21,7 @@ export default function Convertor(props: {
                 getUpdatedUrl({ coin: key, amount: value.toString() })
               );
               e.preventDefault();
+              e.stopPropagation();
             }}
           >
             <p>{key}</p>

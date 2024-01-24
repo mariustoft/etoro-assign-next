@@ -28,7 +28,7 @@ export default function Convertor(props: {
   const isOpen = Boolean(Number(props.searchParams["open"]));
 
   const getCalculatedConversion = (currency?: string) => {
-    if (!price || !currency) return null;
+    if (!price || !currency || !selectedCoin) return null;
     const calculatedConversion = price[selectedCoin][currency] * amount;
     if (isNaN(price[selectedCoin][currency] * amount)) return null;
     return calculatedConversion;
