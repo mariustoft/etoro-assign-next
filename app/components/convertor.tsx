@@ -46,9 +46,6 @@ export default function Convertor(props: {
             coin: formData.get("coin") as string,
           })
         );
-        // router.refresh();
-
-        e.stopPropagation();
       }}
       className="w-5/6 gap-2"
     >
@@ -112,7 +109,10 @@ export default function Convertor(props: {
           {props?.supportedCurrencies
             ?.filter((currency) => selectedCurrencies.includes(currency))
             .map((currency) => (
-              <label key={currency} className="mr-10 select-none cursor-pointer">
+              <label
+                key={currency}
+                className="mr-10 select-none cursor-pointer"
+              >
                 {currency} {getCalculatedConversion(currency)}
               </label>
             ))}
