@@ -10,21 +10,22 @@ import {
   DEFAULT_SELECTED_CURRENCY,
   PORTFOLIO,
 } from "./constants";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Convertor(props: {
   supportedCurrencies: Awaited<ReturnType<typeof getSupportedCurrencies>>;
+  searchParams: { [key: string]: string };
 }) {
+  const router = useRouter();
   const { pending } = useFormStatus();
   const [price, formAction] = useFormState(getSimplePrice, null);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const amount = Number(searchParams.get("amount")) || 1;
-  const selectedCoin = searchParams.get("coin") || DEFAULT_SELECTED_COIN;
-  const selectedCurrencies = searchParams.get("currencies")?.split(",") || [
+
+  const amount = Number(props.searchParams["amount"]) || 1;
+  const selectedCoin = props.searchParams["coin"] || DEFAULT_SELECTED_COIN;
+  const selectedCurrencies = props.searchParams["currencies"] || [
     DEFAULT_SELECTED_CURRENCY,
   ];
-  const isOpen = Boolean(Number(searchParams.get("open")));
+  const isOpen = Boolean(Number(props.searchParams["open"]));
 
   const getCalculatedConversion = (currency?: string) => {
     if (!price || !currency) return null;
@@ -63,12 +64,13 @@ export default function Convertor(props: {
         );
         e.stopPropagation();
       }}
+      className="w-5/6 gap-2"
     >
       <section className="flex flex-row gap-2">
         {/* input amount */}
         <input
           required
-          defaultValue={searchParams.get("amount") || 1}
+          defaultValue={props.searchParams["amount"] || 1}
           type="number"
           name="amount"
           max={PORTFOLIO[selectedCoin]}
@@ -114,7 +116,7 @@ export default function Convertor(props: {
         open={isOpen}
         onClick={(e) => {
           console.log(!e.currentTarget.open);
-          router.push(getUpdatedUrl({ open: !e.currentTarget.open ? 1 : 0}));
+          router.push(getUpdatedUrl({ open: !e.currentTarget.open ? 1 : 0 }));
         }}
       >
         <summary className="flex flex-row flex-wrap gap-2 cursor-pointer w-122 h-100 bg-green-500/100 rounded-md">
