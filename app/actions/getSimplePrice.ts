@@ -12,8 +12,12 @@ export async function getSimplePrice(init: unknown, formData: FormData) {
   url.searchParams.set("include_last_updated_at", "true");
 
   const response = await fetch(url.toString());
-  const data: Record<string, Record<string, number>> = await response.json();
+  const data = await response.json();
 
-  // revalidatePath(url.toString());
-  return data;
+  console.log("getSimplePrice", data);
+
+
+  if (data["status"]) return null;
+
+  return data as Record<string, Record<string, number>>;
 }

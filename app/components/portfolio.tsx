@@ -16,10 +16,11 @@ export default function Convertor(props: {
           <button
             key={key}
             className="flex flex-row items-center justify-between"
-            onClick={() => {
+            onClick={(e) => {
               router.push(
                 getUpdatedUrl({ coin: key, amount: value.toString() })
               );
+              e.preventDefault();
             }}
           >
             <p>{key}</p>
