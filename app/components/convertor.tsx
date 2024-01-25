@@ -27,7 +27,10 @@ export default function Convertor(props: {
 
   return (
     <section className="w-full p-4">
-      <form action={formAction} className="flex justify-start relative gap-2">
+      <form
+        action={formAction}
+        className="flex flex-col md:flex-row justify-start relative gap-2"
+      >
         {/* input amount */}
         <input
           required
@@ -41,8 +44,8 @@ export default function Convertor(props: {
           className="p-2 text-xl font-black w-30 appearance-none border-2 border-black rounded-md "
         />
 
-        <div className="flex gap-2 relative w-1/5 rounded-md ">
-          <details className="flex flex-col gap-2 absolute top-0">
+        <div className="flex gap-2 relative w-1/5 rounded-md">
+          <details className="flex flex-col gap-2 md:absolute top-0">
             <summary className="flex items-center gap-2 cursor-pointer w-200 h-100 h-100 rounded-md">
               <span className="text-4xl font-bold hover:text-green-500">
                 {selectedCoin}
@@ -74,7 +77,7 @@ export default function Convertor(props: {
         </div>
 
         <div className="flex gap-2 relative w-1/6 rounded-md ">
-          <details className="flex flex-col gap-2 absolute top-0">
+          <details className="flex flex-col gap-2 md:absolute top-0">
             <summary className="flex items-center gap-2 cursor-pointer w-200 h-100 h-100 rounded-md">
               <span className="text-4xl font-bold hover:text-green-500">
                 {selectedCurrency}
@@ -103,7 +106,7 @@ export default function Convertor(props: {
         </div>
 
         <button
-          className=" text-xs font-bold b-1 bg-black border-green-500 border-2 rounded-md px-2 hover:bg-green-500 text-white"
+          className="text-xl md:text-xs font-bold b-1 bg-black border-green-500 border-2 rounded-md px-2 hover:bg-green-500 text-white"
           type="submit"
           disabled={pending}
         >
