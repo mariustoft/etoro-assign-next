@@ -31,6 +31,7 @@ export default function Convertor(props: {
         {/* input amount */}
         <input
           required
+          autoFocus
           defaultValue={amount}
           type="number"
           name="amount"
@@ -114,6 +115,7 @@ export default function Convertor(props: {
             "text-xl font-black  m-0" +
             (calculatedConversion === null ? "invisible" : "")
           }
+          hidden={calculatedConversion === null}
         >
           Total // <br /> {calculatedConversion} {selectedCurrency}
         </span>
