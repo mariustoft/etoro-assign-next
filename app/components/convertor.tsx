@@ -11,7 +11,6 @@ import { getSimplePrice } from "../actions/getSimplePrice";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getSupportedCurrencies } from "../actions/getSupportedCurrencies";
 import { getUpdatedUrl } from "../tools/getUpdatedUrl";
-import Tracker from "./tracker";
 
 export default function Convertor(props: {
   supportedCurrencies?: Awaited<ReturnType<typeof getSupportedCurrencies>>;
@@ -88,6 +87,25 @@ export default function Convertor(props: {
           ))}
         </select>
 
+        <hr />
+        <select
+          className="p-1 w-1/2 border-2 border-black rounded-md"
+          name="coin"
+          id="coin"
+          onChange={(e) => {
+            router.push(getUpdatedUrl({ coin: e.currentTarget.value }));
+            e.preventDefault();
+          }}
+          value={selectedCoin}
+        >
+          {/* selector for coins */}
+          {props.supportedCurrencies?.map((currency) => (
+            <option key={currency} value={currency}>
+              {currency}
+            </option>
+          ))}
+        </select>
+
         <button
           className="p-1 w-1/2 border-2 border-black rounded-md bg-green-500/100"
           type="submit"
@@ -96,57 +114,6 @@ export default function Convertor(props: {
           Convert
         </button>
       </section>
-
-      {/* <Tracker price={price} searchParams={{}} /> */}
-      <h1>Tracker</h1>
-      {/* checboxes for currencies*/}
-      <details
-        className="flex flex-col gap-2"
-        open={true}
-        onClick={(e) => {
-          router.push(
-            getUpdatedUrl({ open: e.currentTarget.open ? "0" : "1" })
-          );
-          e.preventDefault();
-        }}
-      >
-        <summary className="flex flex-row flex-wrap gap-2 cursor-pointer w-122 h-100 bg-green-500/100 rounded-md">
-          {props?.supportedCurrencies
-            ?.filter((currency) => selectedCurrencies.includes(currency))
-            .map((currency) => (
-              <label
-                key={currency}
-                className="mr-10 select-none cursor-pointer"
-              >
-                {currency} {getCalculatedConversion(currency)}
-              </label>
-            ))}
-        </summary>
-
-        <div className="flex flex-row flex-wrap gap-2">
-          {props.supportedCurrencies?.map((currency) => (
-            <label
-              key={currency}
-              className="w-1/6 flex align-middle p-2 border-2 border-grey rounded-md"
-            >
-              <input
-                className="flex  mr-2 select-none"
-                type="checkbox"
-                name="currencies"
-                checked={selectedCurrencies.includes(currency)}
-                defaultValue={currency}
-                onChange={(e) => {
-                  router.push(
-                    getUpdatedUrl({ currencies: [e.currentTarget.value] })
-                  );
-                  e.preventDefault();
-                }}
-              />
-              {currency}
-            </label>
-          ))}
-        </div>
-      </details>
     </form>
   );
 }
