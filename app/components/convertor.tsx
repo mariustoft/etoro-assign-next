@@ -4,55 +4,30 @@ import {
   DEFAULT_SELECTED_COIN,
   DEFAULT_SELECTED_CURRENCY,
   PORTFOLIO,
+  CURRENCIES,
 } from "../constants";
 
 import { useFormState, useFormStatus } from "react-dom";
-import { getSimplePrice } from "../actions/getSimplePrice";
-import { useRouter, useSearchParams } from "next/navigation";
-import { getSupportedCurrencies } from "../actions/getSupportedCurrencies";
-import { getUpdatedUrl } from "../tools/getUpdatedUrl";
+import Link from "next/link";
+import { getCalculatedConversion } from "../actions/getCalculatedConversion";
 
 export default function Convertor(props: {
-  supportedCurrencies?: Awaited<ReturnType<typeof getSupportedCurrencies>>;
   searchParams: { [key: string]: string };
 }) {
-  const router = useRouter();
   const { pending } = useFormStatus();
-  const [price, formAction] = useFormState(getSimplePrice, null);
-  const searchParams = useSearchParams();
+  const [calculatedConversion, formAction] = useFormState(
+    getCalculatedConversion,
+    null
+  );
 
-  const amount = Number(searchParams.get("amount")) || 1;
-  const selectedCoin = searchParams.get("coin") || DEFAULT_SELECTED_COIN;
-
-  const selectedCurrencies = searchParams.get("currencies") || [
-    DEFAULT_SELECTED_CURRENCY,
-  ];
-  const isOpen = Boolean(Number(searchParams.get("open")));
-
-  const getCalculatedConversion = (currency?: string) => {
-    if (!price || !currency || !selectedCoin) return null;
-    const calculatedConversion = price[selectedCoin][currency] * amount;
-    if (isNaN(price[selectedCoin][currency] * amount)) return null;
-    return calculatedConversion;
-  };
+  const amount = props.searchParams.amount || 1;
+  const selectedCoin = props.searchParams.coin || DEFAULT_SELECTED_COIN;
+  const selectedCurrency =
+    props.searchParams.selectedCurrency || DEFAULT_SELECTED_CURRENCY;
 
   return (
-    <form
-      action={formAction}
-      onChange={(e) => {
-        const formData = new FormData(e.currentTarget);
-        // console.log("formData", formData);
-        router.push(
-          getUpdatedUrl({
-            currencies: formData.getAll("currencies") as string[],
-            coin: formData.get("coin") as string,
-          })
-        );
-      }}
-      className="w-5/6 gap-2"
-    >
-      <h1>Convertor</h1>
-      <section className="flex flex-row gap-2">
+    <section className="w-full p-4">
+      <form action={formAction} className="flex justify-start relative gap-2">
         {/* input amount */}
         <input
           required
@@ -62,58 +37,87 @@ export default function Convertor(props: {
           max={PORTFOLIO[selectedCoin]}
           min={0}
           id="amount"
-          className="p-1 w-1/2 border-2 border-black rounded-md"
-          onChange={(e) => {
-            router.push(getUpdatedUrl({ amount: e.currentTarget.value }));
-          }}
+          className="p-2 text-xl font-black w-30 appearance-none border-2 border-black rounded-md "
         />
 
-        <hr />
-        <select
-          className="p-1 w-1/2 border-2 border-black rounded-md"
-          name="coin"
-          id="coin"
-          onChange={(e) => {
-            router.push(getUpdatedUrl({ coin: e.currentTarget.value }));
-            e.preventDefault();
-          }}
-          value={selectedCoin}
-        >
-          {/* selector for coins */}
-          {Object.keys(PORTFOLIO).map((coin) => (
-            <option key={coin} value={coin}>
-              {coin}
-            </option>
-          ))}
-        </select>
+        <div className="flex gap-2 relative w-1/5 rounded-md ">
+          <details className="flex flex-col gap-2 absolute top-0">
+            <summary className="flex items-center gap-2 cursor-pointer w-200 h-100 h-100 rounded-md">
+              <span className="text-4xl font-bold hover:text-green-500">
+                {selectedCoin}
+              </span>
+              <span className="text-2xl px-1 font-bold hover:text-red-500">
+                ⮕
+              </span>
+              <input type="hidden" name="coin" value={selectedCoin} />
+            </summary>
 
-        <hr />
-        <select
-          className="p-1 w-1/2 border-2 border-black rounded-md"
-          name="coin"
-          id="coin"
-          onChange={(e) => {
-            router.push(getUpdatedUrl({ coin: e.currentTarget.value }));
-            e.preventDefault();
-          }}
-          value={selectedCoin}
-        >
-          {/* selector for coins */}
-          {props.supportedCurrencies?.map((currency) => (
-            <option key={currency} value={currency}>
-              {currency}
-            </option>
-          ))}
-        </select>
+            {Object.keys(PORTFOLIO)
+              .filter((x) => x !== selectedCoin)
+              .map((coin) => (
+                <Link
+                  replace
+                  key={coin}
+                  className="flex items-center justify-between bg-green cursor-pointer hover:text-green-500"
+                  href={{
+                    query: {
+                      ...props.searchParams,
+                      coin,
+                    },
+                  }}
+                >
+                  <span className="text-lg font-bold">{coin}</span>
+                </Link>
+              ))}
+          </details>
+        </div>
+
+        <div className="flex gap-2 relative w-1/6 rounded-md ">
+          <details className="flex flex-col gap-2 absolute top-0">
+            <summary className="flex items-center gap-2 cursor-pointer w-200 h-100 h-100 rounded-md">
+              <span className="text-4xl font-bold hover:text-green-500">
+                {selectedCurrency}
+              </span>
+              <input type="hidden" name="currency" value={selectedCurrency} />
+            </summary>
+
+            {CURRENCIES.filter((x) => x !== selectedCurrency).map(
+              (currency) => (
+                <Link
+                  replace
+                  key={currency}
+                  className="flex items-center justify-between bg-green cursor-pointer hover:text-green-500"
+                  href={{
+                    query: {
+                      ...props.searchParams,
+                      selectedCurrency: currency,
+                    },
+                  }}
+                >
+                  <span className="text-lg font-bold">{currency}</span>
+                </Link>
+              )
+            )}
+          </details>
+        </div>
 
         <button
-          className="p-1 w-1/2 border-2 border-black rounded-md bg-green-500/100"
+          className=" text-xs font-bold b-1 bg-black border-green-500 border-2 rounded-md px-2 hover:bg-green-500 text-white"
           type="submit"
-          aria-disabled={pending}
+          disabled={pending}
         >
           Convert
         </button>
-      </section>
-    </form>
+
+        <span
+          className={
+            "text-xl font-black  m-0" +
+            (calculatedConversion === null ? "invisible" : "")
+          }
+        >
+          Total // <br /> {calculatedConversion} {selectedCurrency}
+        </span>
+      </form>
+    </section>
   );
 }
