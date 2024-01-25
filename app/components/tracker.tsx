@@ -15,6 +15,7 @@ import { getUpdatedUrl } from "../tools/getUpdatedUrl";
 export default function Tracker(props: {
   supportedCurrencies?: Awaited<ReturnType<typeof getSupportedCurrencies>>;
   searchParams: { [key: string]: string };
+  price: Awaited<ReturnType<typeof getSimplePrice>>;
 }) {
   const router = useRouter();
   const { pending } = useFormStatus();

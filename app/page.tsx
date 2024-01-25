@@ -20,9 +20,9 @@ export default async function Page(props: {
           supportedCurrencies={supportedCurrencies}
           searchParams={props.searchParams}
         />
-        <Tracker searchParams={props.searchParams}
+        {/* <Tracker searchParams={props.searchParams}
           supportedCurrencies={supportedCurrencies}
-        />
+        /> */}
       </Suspense>
     </main>
   );
