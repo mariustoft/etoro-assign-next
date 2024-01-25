@@ -18,7 +18,7 @@ export const CURRENCIES = [
   "ltc",
   "xlm",
   "xrp",
-  "usd"
+  "usd",
 ] as const;
 
 export const DEFAULT_SELECTED_COIN = "bitcoin";
