@@ -1,5 +1,3 @@
-"use client";
-
 export function getUpdatedUrl(args: {
   amount?: string;
   coin?: string;
@@ -8,11 +6,9 @@ export function getUpdatedUrl(args: {
 }) {
   const url = new URL(window.location.href);
 
-  args.amount && url.searchParams.set("amount", args.amount);
-  args.coin && url.searchParams.set("coin", args.coin);
-  args.open && url.searchParams.set("open", args.open);
-  args.currencies &&
-    url.searchParams.set("currencies", args.currencies.join(","));
+  Object.entries(args).forEach(([key, value]) => {
+    if (value) url.searchParams.set(key, Array.isArray(value) ? value.join(",") : value);
+  });
 
   return url.toString();
 }
