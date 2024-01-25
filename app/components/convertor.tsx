@@ -25,6 +25,10 @@ export default function Convertor(props: {
   const selectedCurrency =
     props.searchParams.selectedCurrency || DEFAULT_SELECTED_CURRENCY;
 
+  const selectedCurrencyOpen = Boolean(
+    Number(props.searchParams.selectedCurrencyOpen)
+  );
+
   return (
     <section className="w-full p-4">
       <form
@@ -44,13 +48,13 @@ export default function Convertor(props: {
           className="p-2 text-xl font-black w-30 appearance-none border-2 border-black rounded-md "
         />
 
-        <div className="flex gap-2 relative w-1/5 rounded-md">
+        <div className="flex gap-2 relative w-1/5 rounded-md select-none">
           <details className="flex flex-col gap-2 md:absolute top-0">
             <summary className="flex items-center gap-2 cursor-pointer w-200 h-100 h-100 rounded-md">
-              <span className="text-4xl font-bold hover:text-green-500">
+              <span className="text-4xl font-bold hover:text-green-500 ">
                 {selectedCoin}
               </span>
-              <span className="text-2xl px-1 font-bold hover:text-red-500">
+              <span className="text-2xl self-end px-1 font-bold hover:text-red-500 rotate-90">
                 ⮕
               </span>
               <input type="hidden" name="coin" value={selectedCoin} />
@@ -76,11 +80,26 @@ export default function Convertor(props: {
           </details>
         </div>
 
-        <div className="flex gap-2 relative w-1/6 rounded-md ">
-          <details className="flex flex-col gap-2 md:absolute top-0">
+        <div className="flex gap-2 relative w-1/6 rounded-md select-none">
+          <details
+            className="flex flex-col gap-2 md:absolute top-0"
+            open={selectedCurrencyOpen}
+          >
             <summary className="flex items-center gap-2 cursor-pointer w-200 h-100 h-100 rounded-md">
-              <span className="text-4xl font-bold hover:text-green-500">
+              <Link
+                replace
+                href={{
+                  query: {
+                    ...props.searchParams,
+                    selectedCurrencyOpen: selectedCurrencyOpen ? "0" : "1",
+                  },
+                }}
+                className="text-4xl font-bold hover:text-green-500"
+              >
                 {selectedCurrency}
+              </Link>
+              <span className="text-2xl self-end px-1 font-bold hover:text-red-500 rotate-90">
+                ⮕
               </span>
               <input type="hidden" name="currency" value={selectedCurrency} />
             </summary>
@@ -106,7 +125,7 @@ export default function Convertor(props: {
         </div>
 
         <button
-          className="text-xl md:text-xs font-bold b-1 bg-black border-green-500 border-2 rounded-md px-2 hover:bg-green-500 text-white"
+          className="text-xlmd:text-xs font-bold b-1 bg-black border-green-500 border-2 rounded-md px-2 hover:bg-green-500 text-white"
           type="submit"
           disabled={pending}
         >
