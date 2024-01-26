@@ -3,7 +3,7 @@
 import { useFormState } from "react-dom";
 import { calculatePortfolioValue } from "../actions/calculatePortfolioValue";
 
-export default function PortfoliuValues(props: {
+export default function PortfolioValues(props: {
   portfolioValue?: Awaited<ReturnType<typeof calculatePortfolioValue>>;
 }) {
   const [portfolioValue, formAction] = useFormState(
@@ -12,7 +12,7 @@ export default function PortfoliuValues(props: {
   );
 
   return (
-    <form className="w-5/6 gap-2" action={formAction}>
+    <form className="w-full p-4 gap-2" action={formAction}>
       <h1 className="text-2xl font-bold">Portfolio Value</h1>
       <h2 className="text-4xl font-bold">
         {Intl.NumberFormat("en-US", {
