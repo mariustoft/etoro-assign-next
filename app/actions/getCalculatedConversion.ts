@@ -25,7 +25,8 @@ export async function getCalculatedConversion(
 
     const data = await response.json();
 
-    console.log("getCalculatedConversion", data, coin, currency, amount);
+    // console.log("getCalculatedConversion", data, coin, currency, amount);
+    revalidatePath("/");
 
     return data[coin][currency] * amount;
   } catch {

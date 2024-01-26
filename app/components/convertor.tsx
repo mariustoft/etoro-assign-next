@@ -10,6 +10,7 @@ import {
 import { useFormState, useFormStatus } from "react-dom";
 import Link from "next/link";
 import { getCalculatedConversion } from "../actions/getCalculatedConversion";
+import { getUpdatedUrl } from "../tools/getUpdatedUrl";
 
 export default function Convertor(props: {
   searchParams: { [key: string]: string };
@@ -45,6 +46,11 @@ export default function Convertor(props: {
           max={PORTFOLIO[selectedCoin]}
           min={0}
           id="amount"
+          onChange={e=> window.history.replaceState(null, "", 
+            getUpdatedUrl({
+              amount: e.currentTarget.value,
+            })
+          )}
           className="p-2 text-xl font-black w-30 appearance-none border-2 border-black rounded-md "
         />
 
