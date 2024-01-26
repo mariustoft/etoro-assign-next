@@ -17,11 +17,14 @@ export default function RootLayout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en" className={inter.className}>
-      <body className="bg-slate-200 flex flex-col gap-4 text-color-red">
+      <body className="bg-slate-200 flex flex-col  gap-4 text-color-red">
         <Link
           href="/"
-          className="text-4xl font-bold text-center text-color-red m-1"
+          className="text-4xl font-bold flex justify-around items-center text-center text-color-red m-1 relative"
         >
+          <p className="text-4xl self-end px-1 font-bold hover:text-green-500  absolute left-0">
+            ₿
+          </p>
           {metadata.title?.toString()}
         </Link>
         {children}
