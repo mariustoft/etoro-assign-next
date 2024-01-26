@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 import { calculatePortfolioValue } from "../actions/calculatePortfolioValue";
 import Link from "next/link";
 
@@ -11,6 +11,8 @@ export default function PortfolioValues(props: {
     calculatePortfolioValue,
     props.portfolioValue
   );
+
+  const { pending } = useFormStatus();
 
   return (
     <form className="w-full p-4 gap-2" action={formAction}>
@@ -29,7 +31,10 @@ export default function PortfolioValues(props: {
         </sub>
       </div>
 
-      <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+      <button
+        disabled={pending}
+        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+      >
         Refresh
       </button>
 
