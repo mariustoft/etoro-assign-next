@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { PORTFOLIO } from "../constants";
 import { getUpdatedUrl } from "../tools/getUpdatedUrl";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Portfolio(props: {
   searchParams: { [key: string]: string };
 }) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   return (
     <section className="w-full p-4 bg-black text-white">
       <header className="flex flex-row items-baseline justify-start">
@@ -56,6 +57,13 @@ export default function Portfolio(props: {
                       [key]: e.currentTarget.value,
                     })
                   );
+                  // router.replace(
+                  //   getUpdatedUrl({
+                  //     // ...props.searchParams,
+                  //     amount: e.currentTarget.value,
+                  //     [key]: e.currentTarget.value,
+                  //   })
+                  // );
                   e.stopPropagation();
                   e.preventDefault();
                 }}
@@ -68,12 +76,7 @@ export default function Portfolio(props: {
       <Link
         replace
         className="text-xs font-bold b-1 border-green-500 border-2 rounded-md px-2 hover:bg-green-500 hover:text-white"
-        href={{
-          pathname: "/results",
-          query: {
-            ...props.searchParams,
-          },
-        }}
+        href={{ pathname: "/results", search: searchParams.toString() }}
       >
         {"Get total value in USD ⮕".toUpperCase()}
       </Link>

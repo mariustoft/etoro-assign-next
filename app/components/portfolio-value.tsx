@@ -12,7 +12,6 @@ export default function PortfolioValues(props: {
 }) {
   const searchParams = useSearchParams();
 
-
   const [portfolioValue, formAction] = useFormState(
     calculatePortfolioValue,
     null
