@@ -21,9 +21,11 @@ export async function getCalculatedConversion(
   try {
     const response = await fetch(url.toString());
 
+    const data = await response.json();
+    console.log(data);
+
     if (response.status !== 200) throw new Error();
 
-    const data = await response.json();
 
     revalidatePath("/");
 

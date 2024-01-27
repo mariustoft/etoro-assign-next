@@ -4,28 +4,33 @@ import { useFormState, useFormStatus } from "react-dom";
 import { calculatePortfolioValue } from "../actions/calculatePortfolioValue";
 import Link from "next/link";
 import { PORTFOLIO } from "../constants";
+import { useSearchParams } from "next/navigation";
 
 export default function PortfolioValues(props: {
-  portfolioValue?: Awaited<ReturnType<typeof calculatePortfolioValue>>;
-  searchParams: { [key: string]: string };
+  // portfolioValue?: Awaited<ReturnType<typeof calculatePortfolioValue>>;
+  // searchParams: { [key: string]: string };
 }) {
+  const searchParams = useSearchParams();
+
+
   const [portfolioValue, formAction] = useFormState(
     calculatePortfolioValue,
-    props.portfolioValue
+    null
   );
 
   const { pending } = useFormStatus();
 
   return (
     <form className="w-full p-4 gap-2" action={formAction}>
-      {Object.keys(props.searchParams).map((key) => {
-        if (!Object.keys(PORTFOLIO).includes(key)) return null;
+      {Object.keys(PORTFOLIO).map((key) => {
+        console.log(key);
+        if (!searchParams.has(key)) return null;
         return (
           <input
             key={key}
             type="hidden"
             name={key}
-            value={props.searchParams[key]}
+            value={searchParams.get(key)?.toString()}
           />
         );
       })}
@@ -49,7 +54,7 @@ export default function PortfolioValues(props: {
         disabled={pending}
         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
       >
-        Refresh
+        Calculate
       </button>
 
       <Link replace href="/">

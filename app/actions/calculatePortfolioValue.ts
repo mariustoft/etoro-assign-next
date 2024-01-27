@@ -21,11 +21,15 @@ export const calculatePortfolioValue = async (
 
     const data = await response.json();
 
-    const total = Object.keys(data).reduce(
-      (acc, key) =>
-        acc + data[key].usd * (Number(formData?.get(key)) ?? PORTFOLIO[key]),
-      0
-    );
+    // add all the values together
+    const total = Object.keys(data).reduce((acc, key) => {
+      console.log("formData?.get(key)", formData?.get(key));
+      return (
+        acc +
+        data[key].usd *
+          (formData?.get(key) ? Number(formData.get(key)) : PORTFOLIO[key])
+      );
+    }, 0);
 
     return total;
   } catch {

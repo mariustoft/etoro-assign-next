@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { PORTFOLIO } from "../constants";
 import { getUpdatedUrl } from "../tools/getUpdatedUrl";
-import { use } from "react";
 import { useSearchParams } from "next/navigation";
 
 export default function Portfolio(props: {
@@ -52,7 +51,7 @@ export default function Portfolio(props: {
                     null,
                     "",
                     getUpdatedUrl({
-                      ...props.searchParams,
+                      // ...props.searchParams,
                       amount: e.currentTarget.value,
                       [key]: e.currentTarget.value,
                     })
