@@ -3,9 +3,11 @@
 import { useFormState, useFormStatus } from "react-dom";
 import { calculatePortfolioValue } from "../actions/calculatePortfolioValue";
 import Link from "next/link";
+import { PORTFOLIO } from "../constants";
 
 export default function PortfolioValues(props: {
   portfolioValue?: Awaited<ReturnType<typeof calculatePortfolioValue>>;
+  searchParams: { [key: string]: string };
 }) {
   const [portfolioValue, formAction] = useFormState(
     calculatePortfolioValue,
@@ -16,6 +18,18 @@ export default function PortfolioValues(props: {
 
   return (
     <form className="w-full p-4 gap-2" action={formAction}>
+      {Object.keys(props.searchParams).map((key) => {
+        if (!Object.keys(PORTFOLIO).includes(key)) return null;
+        return (
+          <input
+            key={key}
+            type="hidden"
+            name={key}
+            value={props.searchParams[key]}
+          />
+        );
+      })}
+
       <h1 className="text-2xl font-bold">Portfolio Value</h1>
       <div className="flex py-1">
         <h2 className="text-4xl font-bold">
@@ -39,7 +53,6 @@ export default function PortfolioValues(props: {
       </button>
 
       <Link replace href="/">
-        {" "}
         home
       </Link>
     </form>

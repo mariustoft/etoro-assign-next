@@ -2,7 +2,10 @@
 
 import { PORTFOLIO } from "../constants";
 
-export const calculatePortfolioValue = async () => {
+export const calculatePortfolioValue = async (
+  init?: unknown,
+  formData?: FormData
+) => {
   const url = new URL(process.env.API_URL + "/simple/price");
 
   url.searchParams.set("ids", Object.keys(PORTFOLIO).join(","));
@@ -18,9 +21,9 @@ export const calculatePortfolioValue = async () => {
 
     const data = await response.json();
 
-    // add all the values together
     const total = Object.keys(data).reduce(
-      (acc, key) => acc + data[key].usd * PORTFOLIO[key],
+      (acc, key) =>
+        acc + data[key].usd * (Number(formData?.get(key)) ?? PORTFOLIO[key]),
       0
     );
 
