@@ -51,12 +51,12 @@ export default function PortfolioValues(props: {
 
       <button
         disabled={pending}
-        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
       >
         Calculate
       </button>
 
-      <Link replace href="/">
+      <Link replace href="/" className="hover:font-black">
         home
       </Link>
     </form>
