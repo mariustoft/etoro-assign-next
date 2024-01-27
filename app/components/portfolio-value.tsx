@@ -23,7 +23,6 @@ export default function PortfolioValues(props: {
   return (
     <form className="w-full p-4 gap-2" action={formAction}>
       {Object.keys(PORTFOLIO).map((key) => {
-        console.log(key);
         if (!searchParams.has(key)) return null;
         return (
           <input

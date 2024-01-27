@@ -22,7 +22,6 @@ export async function getCalculatedConversion(
     const response = await fetch(url.toString());
 
     const data = await response.json();
-    console.log(data);
 
     if (response.status !== 200) throw new Error();
 

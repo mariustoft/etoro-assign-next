@@ -23,7 +23,6 @@ export const calculatePortfolioValue = async (
 
     // add all the values together
     const total = Object.keys(data).reduce((acc, key) => {
-      console.log("formData?.get(key)", formData?.get(key));
       return (
         acc +
         data[key].usd *

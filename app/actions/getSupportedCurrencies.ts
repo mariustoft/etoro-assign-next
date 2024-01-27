@@ -13,7 +13,6 @@ export async function getSupportedCurrencies() {
     if (response.status !== 200) throw new Error();
 
     const data = await response.json();
-    console.log("getSupportedCurrencies", data);
     revalidatePath("/");
 
     return data as string[];

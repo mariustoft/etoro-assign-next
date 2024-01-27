@@ -20,7 +20,6 @@ export async function getSimplePrice(init: unknown, formData: FormData) {
 
     const data = await response.json();
 
-    console.log("getSimplePrice", data);
     revalidatePath("/");
 
     return data as Record<string, Record<string, number>>;
