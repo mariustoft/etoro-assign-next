@@ -2,15 +2,11 @@
 
 import { PORTFOLIO } from "../constants";
 
-export const calculatePortfolioValue = async (
-  init?: unknown,
-  formData?: FormData
-) => {
+export const calculatePortfolioValue = async (portfolio: typeof PORTFOLIO) => {
   const url = new URL(process.env.API_URL + "/simple/price");
 
   url.searchParams.set("ids", Object.keys(PORTFOLIO).join(","));
   url.searchParams.set("vs_currencies", "usd");
-  url.searchParams.set("include_24hr_change", "true");
 
   try {
     const response = await fetch(url.toString(), {
@@ -21,15 +17,12 @@ export const calculatePortfolioValue = async (
 
     const data = await response.json();
 
-    console.log(data);
-    console.log(formData);
-
     // add all the values together
     const total = Object.keys(data).reduce((acc, key) => {
       return (
         acc +
         data[key].usd *
-          (formData?.get(key) ? Number(formData.get(key)) : PORTFOLIO[key])
+          (portfolio[key] ? Number(portfolio[key]) : Number(PORTFOLIO[key]))
       );
     }, 0);
 

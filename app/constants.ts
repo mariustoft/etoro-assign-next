@@ -1,9 +1,9 @@
 export const PORTFOLIO = {
-  cardano: 1,
-  bitcoin: 1,
-  ethereum: 1,
-  solana: 1,
-} as { [key: string]: number };
+  cardano: "17",
+  bitcoin: "19",
+  ethereum: "4",
+  solana: "3",
+} as Record<string, string>;
 
 export const CURRENCIES = [
   "ada",

@@ -1,8 +1,6 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
 import { calculatePortfolioValue } from "../actions/calculatePortfolioValue";
-import Link from "next/link";
 import { PORTFOLIO } from "../constants";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -12,15 +10,12 @@ export default function PortfolioValues(props: {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [portfolioValue, formAction] = useFormState(
-    calculatePortfolioValue,
-    props.portfolioValue
-  );
-
-  const { pending } = useFormStatus();
+  const timestamp = new Date().toLocaleString("da-DK", {
+    timeZoneName: "short",
+  });
 
   return (
-    <form className="w-full p-4 gap-2" action={formAction}>
+    <section className="w-full p-4 gap-2">
       {Object.keys(PORTFOLIO).map((key) => {
         if (!searchParams.has(key)) return null;
         return (
@@ -39,18 +34,15 @@ export default function PortfolioValues(props: {
           {Intl.NumberFormat("da-DK", {
             style: "currency",
             currency: "USD",
-          }).format(portfolioValue || 0)}
-          {/* {portfolioValue || 0} */}
+          }).format(props.portfolioValue || 0)}
         </h2>
         <sub className="text-xs">
-          {new Date().toLocaleString("da-DK", {
-            timeZoneName: "short",
-          })}
+          {/* {timestamp} */}
         </sub>
       </div>
 
       <button
-        disabled={pending}
+        onClick={() => router.refresh()}
         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
       >
         Calculate
@@ -63,6 +55,6 @@ export default function PortfolioValues(props: {
       >
         home
       </button>
-    </form>
+    </section>
   );
 }

@@ -8,17 +8,7 @@ export const revalidate = 0;
 export default async function Page(props: {
   searchParams: { [key: string]: string };
 }) {
-  const formDataWithSearchParams = new FormData();
-  Object.entries(props.searchParams).forEach(([key, value]) => {
-    formDataWithSearchParams.append(key, value);
-  });
-
-  const portfolioValue = await calculatePortfolioValue(
-    null,
-    formDataWithSearchParams
-  );
-
-  console.log("portfolioValue", portfolioValue);
+  const portfolioValue = await calculatePortfolioValue(props.searchParams);
 
   return (
     <main className="w-full h-full flex flex-col items-center justify-center">
