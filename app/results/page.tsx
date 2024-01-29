@@ -10,12 +10,13 @@ export default async function Page(props: {
 }) {
   const portfolioValue = await calculatePortfolioValue(props.searchParams);
 
- if (!portfolioValue) return "Api error, too many requests"
+  if (!portfolioValue)
+    return "Api error, too many requests, please wait a minute and try again";
 
   return (
     <main className="w-full h-full flex flex-col items-center justify-center">
-      <Portfolio searchParams={props.searchParams} />
       <Suspense fallback={null}>
+        <Portfolio searchParams={props.searchParams} />
         <PortfolioValues portfolioValue={portfolioValue} />
       </Suspense>
     </main>

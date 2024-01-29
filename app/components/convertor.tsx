@@ -73,15 +73,17 @@ export default function Convertor(props: {
             )
           }
         >
-          {Object.keys(PORTFOLIO).map((coin) => (
-            <option
-              key={coin}
-              className="flex items-center justify-between bg-green cursor-pointer hover:text-green-500"
-              value={coin}
-            >
-              <span className="text-lg font-bold">{coin}</span>
-            </option>
-          ))}
+          {Object.keys(PORTFOLIO).map((coin) => {
+            return (
+              <option
+                key={coin}
+                className="flex items-center justify-between bg-green cursor-pointer hover:text-green-500"
+                value={coin}
+              >
+                {coin}
+              </option>
+            );
+          })}
         </select>
 
         <select
@@ -105,7 +107,7 @@ export default function Convertor(props: {
               className="flex items-center justify-between bg-green cursor-pointer hover:text-green-500"
               value={currency}
             >
-              <span className="text-lg font-bold">{currency}</span>
+              {currency}
             </option>
           ))}
         </select>
