@@ -9,11 +9,8 @@ export const calculatePortfolioValue = async (portfolio: typeof PORTFOLIO) => {
   url.searchParams.set("vs_currencies", "usd");
 
   try {
-    const response = await fetch(url.toString(), {
-      next: { revalidate: 0 },
-    });
-
-    if (response.status !== 200) throw new Error();
+    const response = await fetch(url.toString());
+    if (!response.ok) return null;
 
     const data = await response.json();
 

@@ -9,6 +9,8 @@ export default async function Page(props: {
 }) {
   const supportedCurrencies = await getSupportedCurrencies();
 
+  if (!supportedCurrencies) return "Api error, too many requests";
+
   return (
     <main className="w-full h-full flex flex-col items-center justify-center">
       <Portfolio searchParams={props.searchParams} />

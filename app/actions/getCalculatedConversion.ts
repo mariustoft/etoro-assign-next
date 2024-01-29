@@ -1,7 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-
 export async function getCalculatedConversion(
   init: unknown,
   formData: FormData
@@ -20,10 +18,9 @@ export async function getCalculatedConversion(
 
   try {
     const response = await fetch(url.toString());
+    if (!response.ok) return null;
 
     const data = await response.json();
-
-    revalidatePath("/");
 
     return {
       total: data[coin][currency] * amount,

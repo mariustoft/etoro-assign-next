@@ -4,11 +4,8 @@ export async function getSupportedCurrencies() {
   const url = new URL(process.env.API_URL + "/simple/supported_vs_currencies");
 
   try {
-    const response = await fetch(url.toString(), {
-      next: { revalidate: 60 * 60 },
-    });
-
-    if (response.status !== 200) throw new Error();
+    const response = await fetch(url.toString());
+    if (!response.ok) return null;
 
     const data = await response.json();
 
