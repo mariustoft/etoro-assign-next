@@ -4,22 +4,23 @@ import {
   DEFAULT_SELECTED_COIN,
   DEFAULT_SELECTED_CURRENCY,
   PORTFOLIO,
-  CURRENCIES,
 } from "../constants";
 
 import { useFormState, useFormStatus } from "react-dom";
 import { getCalculatedConversion } from "../actions/getCalculatedConversion";
 import { getUpdatedUrl } from "../tools/getUpdatedUrl";
 import { useSearchParams } from "next/navigation";
+import { getSupportedCurrencies } from "../actions/getSupportedCurrencies";
 
 export default function Convertor(props: {
   calculatedConversion?: Awaited<ReturnType<typeof getCalculatedConversion>>;
+  supportedCurrencies?: Awaited<ReturnType<typeof getSupportedCurrencies>>;
 }) {
   const searchParams = useSearchParams();
   const { pending } = useFormStatus();
   const [calculatedConversion, formAction] = useFormState(
     getCalculatedConversion,
-    null
+    props.calculatedConversion
   );
 
   const selectedAmount = searchParams.get("selectedAmount") || 1;
@@ -98,7 +99,7 @@ export default function Convertor(props: {
             )
           }
         >
-          {CURRENCIES.map((currency) => (
+          {props.supportedCurrencies?.map((currency) => (
             <option
               key={currency}
               className="flex items-center justify-between bg-green cursor-pointer hover:text-green-500"
@@ -117,15 +118,23 @@ export default function Convertor(props: {
           Convert
         </button>
 
-        <span
-          className={
-            "text-xl font-black  m-0" +
-            (calculatedConversion === null ? "invisible" : "")
-          }
-          hidden={calculatedConversion === null}
-        >
-          Total // <br /> {calculatedConversion}
-        </span>
+        {calculatedConversion ? (
+          <span
+            className={
+              "text-xl font-black  m-0" +
+              (calculatedConversion === null ? "invisible" : "")
+            }
+            hidden={calculatedConversion === null}
+          >
+            Total // {calculatedConversion?.amount} {calculatedConversion?.coin}{" "}
+            is
+            <br />
+            {Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: calculatedConversion?.currency,
+            }).format(Number(calculatedConversion?.total))}
+          </span>
+        ) : null}
       </form>
     </section>
   );

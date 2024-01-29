@@ -23,12 +23,14 @@ export async function getCalculatedConversion(
 
     const data = await response.json();
 
-    if (response.status !== 200) throw new Error();
-
-
     revalidatePath("/");
 
-    return data[coin][currency] * amount;
+    return {
+      total: data[coin][currency] * amount,
+      coin: coin,
+      currency: currency,
+      amount: amount,
+    };
   } catch {
     return null;
   }
