@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { PORTFOLIO } from "../constants";
 import { getUpdatedUrl } from "../tools/getUpdatedUrl";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Portfolio(props: {
   searchParams: { [key: string]: string };
 }) {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   return (
     <section className="w-full p-4 bg-black text-white">
@@ -64,13 +65,12 @@ export default function Portfolio(props: {
         })}
       </div>
 
-      <Link
-        // replace
+      <button
         className="text-xs font-bold b-1 border-green-500 border-2 rounded-md px-2 hover:bg-green-500 hover:text-white"
-        href={"/results" + window.location.search}
+        onClick={(e) => router.push("/results" + window.location.search)}
       >
         {"Get total value in USD ⮕".toUpperCase()}
-      </Link>
+      </button>
     </section>
   );
 }

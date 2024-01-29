@@ -4,13 +4,13 @@ import { useFormState, useFormStatus } from "react-dom";
 import { calculatePortfolioValue } from "../actions/calculatePortfolioValue";
 import Link from "next/link";
 import { PORTFOLIO } from "../constants";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function PortfolioValues(props: {
   portfolioValue?: Awaited<ReturnType<typeof calculatePortfolioValue>>;
-  // searchParams: { [key: string]: string };
 }) {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const [portfolioValue, formAction] = useFormState(
     calculatePortfolioValue,
@@ -56,13 +56,13 @@ export default function PortfolioValues(props: {
         Calculate
       </button>
 
-      <Link
-        replace
-        href={"/" + window.location.search}
+      <button
+        type="button"
+        onClick={() => router.push("/" + window.location.search)}
         className="hover:font-black"
       >
         home
-      </Link>
+      </button>
     </form>
   );
 }
