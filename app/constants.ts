@@ -1,8 +1,8 @@
 export const PORTFOLIO = {
-  cardano: 12,
-  bitcoin: 22,
-  ethereum: 32,
-  solana: 52,
+  cardano: 1,
+  bitcoin: 1,
+  ethereum: 1,
+  solana: 1,
 } as { [key: string]: number };
 
 export const CURRENCIES = [

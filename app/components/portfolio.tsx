@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { PORTFOLIO } from "../constants";
 import { getUpdatedUrl } from "../tools/getUpdatedUrl";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 export default function Portfolio(props: {
   searchParams: { [key: string]: string };
 }) {
   const searchParams = useSearchParams();
-  const router = useRouter();
+
   return (
     <section className="w-full p-4 bg-black text-white">
       <header className="flex flex-row items-baseline justify-start">
@@ -26,22 +26,23 @@ export default function Portfolio(props: {
               className="flex flex-row items-center justify-between p-2"
               key={key}
             >
-              <Link
-                className="flex flex-row my-1 items-center justify-between bg-green"
-                replace
-                href={{
-                  query: {
-                    ...props.searchParams,
-                    coin: key,
-                    amount: searchParams.get(key) || value.toString(),
-                    // [key]: searchParams.get(key) || value.toString(),
-                  },
+              <button
+                onClick={(e) => {
+                  window.history.replaceState(
+                    null,
+                    "",
+                    getUpdatedUrl({
+                      selectedAmount: searchParams.get(key) || value.toString(),
+                      selectedCoin: key,
+                    })
+                  );
+                  e.stopPropagation();
+                  e.preventDefault();
                 }}
+                className="flex flex-row items-center justify-between gap-2 mr-1 rounded hover:text-green-500"
               >
-                <button className="flex flex-row items-center justify-between gap-2 mr-1 rounded hover:text-green-500">
-                  <p className="font-bold">{key}</p>
-                </button>
-              </Link>
+                <p className="font-bold">{key}</p>
+              </button>
 
               <input
                 className="w-12 p-1 rounded text-black mx-2"
@@ -51,19 +52,9 @@ export default function Portfolio(props: {
                   window.history.replaceState(
                     null,
                     "",
-                    getUpdatedUrl({
-                      // ...props.searchParams,
-                      amount: e.currentTarget.value,
-                      [key]: e.currentTarget.value,
-                    })
+                    getUpdatedUrl({ [key]: e.currentTarget.value })
                   );
-                  // router.replace(
-                  //   getUpdatedUrl({
-                  //     // ...props.searchParams,
-                  //     amount: e.currentTarget.value,
-                  //     [key]: e.currentTarget.value,
-                  //   })
-                  // );
+
                   e.stopPropagation();
                   e.preventDefault();
                 }}
@@ -74,9 +65,9 @@ export default function Portfolio(props: {
       </div>
 
       <Link
-        replace
+        // replace
         className="text-xs font-bold b-1 border-green-500 border-2 rounded-md px-2 hover:bg-green-500 hover:text-white"
-        href={{ pathname: "/results", search: searchParams.toString() }}
+        href={"/results" + window.location.search}
       >
         {"Get total value in USD ⮕".toUpperCase()}
       </Link>

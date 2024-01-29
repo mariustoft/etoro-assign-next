@@ -41,13 +41,6 @@ export default function Tracker(props: {
       action={formAction}
       onChange={(e) => {
         const formData = new FormData(e.currentTarget);
-        // console.log("formData", formData);
-        // router.push(
-        //   getUpdatedUrl({
-        //     currencies: formData.getAll("currencies") as string[],
-        //     coin: formData.get("coin") as string,
-        //   })
-        // );
         window.history.replaceState(
           null,
           "",

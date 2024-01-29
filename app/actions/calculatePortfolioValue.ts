@@ -21,6 +21,9 @@ export const calculatePortfolioValue = async (
 
     const data = await response.json();
 
+    console.log(data);
+    console.log(formData);
+
     // add all the values together
     const total = Object.keys(data).reduce((acc, key) => {
       return (

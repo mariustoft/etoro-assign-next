@@ -7,14 +7,14 @@ import { PORTFOLIO } from "../constants";
 import { useSearchParams } from "next/navigation";
 
 export default function PortfolioValues(props: {
-  // portfolioValue?: Awaited<ReturnType<typeof calculatePortfolioValue>>;
+  portfolioValue?: Awaited<ReturnType<typeof calculatePortfolioValue>>;
   // searchParams: { [key: string]: string };
 }) {
   const searchParams = useSearchParams();
 
   const [portfolioValue, formAction] = useFormState(
     calculatePortfolioValue,
-    null
+    props.portfolioValue
   );
 
   const { pending } = useFormStatus();
@@ -36,10 +36,11 @@ export default function PortfolioValues(props: {
       <h1 className="text-2xl font-bold">Portfolio Value</h1>
       <div className="flex py-1">
         <h2 className="text-4xl font-bold">
-          {Intl.NumberFormat("ds-DK", {
+          {Intl.NumberFormat("da-DK", {
             style: "currency",
             currency: "USD",
           }).format(portfolioValue || 0)}
+          {/* {portfolioValue || 0} */}
         </h2>
         <sub className="text-xs">
           {new Date().toLocaleString("da-DK", {
@@ -55,7 +56,11 @@ export default function PortfolioValues(props: {
         Calculate
       </button>
 
-      <Link replace href="/" className="hover:font-black">
+      <Link
+        replace
+        href={"/" + window.location.search}
+        className="hover:font-black"
+      >
         home
       </Link>
     </form>
