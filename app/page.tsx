@@ -10,7 +10,7 @@ export default async function Page(props: {
   return (
     <main className="w-full h-full flex flex-col items-center justify-center">
       <Portfolio searchParams={props.searchParams} />
-      <Convertor searchParams={props.searchParams} />
+      <Convertor />
     </main>
   );
 }
