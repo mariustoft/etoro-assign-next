@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { getSupportedCurrencies } from "./actions/getSupportedCurrencies";
 import Convertor from "./components/convertor";
 import Portfolio from "./components/portfolio";
+import Cart from "./components/cart";
 
 export const revalidate = 60 * 60;
 
@@ -19,6 +20,7 @@ export default async function Page(props: {
       <Suspense fallback={null}>
         <Convertor supportedCurrencies={supportedCurrencies} />
       </Suspense>
+      {/* <Cart searchParams={props.searchParams} /> */}
     </main>
   );
 }
